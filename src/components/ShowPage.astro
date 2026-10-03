@@ -1,0 +1,64 @@
+---
+import type { Show } from '../data/types';
+import OddsBoard from './OddsBoard.astro';
+import Poll from './Poll.astro';
+import NewsList from './NewsList.astro';
+
+interface Props {
+  show: Show;
+}
+
+const { show } = Astro.props;
+const season = show.season!;
+const next = season.nextEpisode;
+---
+<section class="hero">
+  <div class="hero-main">
+    <div class="kicker">Sezonul {season.number} · După ediția {season.episodes.length}</div>
+    <h1>{show.name}</h1>
+    {show.image && <img src={show.image.src} alt={show.image.alt} class="hero-image" />}
+    {show.description && <p class="lead">{show.description}</p>}
+    {show.facts && (
+      <dl class="facts">
+        {show.facts.map((f) => (
+          <div>
+            <dt>{f.label}</dt>
+            <dd>{f.value}</dd>
+          </div>
+        ))}
+      </dl>
+    )}
+  </div>
+  {next && (
+    <div class="card next-card">
+      <div class="kicker muted">Urmează</div>
+      <div class="next-title">Ediția {next.number}</div>
+      <div class="soft">{next.when}</div>
+      <div class="warm strong">Predicțiile se închid la {next.closes}</div>
+      <a href={`/${show.slug}/predictii/`} class="button">Fă-ți predicțiile</a>
+    </div>
+  )}
+</section>
+
+<div class="columns">
+  <div class="col-main">
+    <OddsBoard show={show} />
+  </div>
+  <aside class="col-side">
+    {show.poll && <Poll id={`${show.slug}-s${season.number}`} question={show.poll.question} options={show.poll.options} />}
+    <section class="card outline" id="cum-functioneaza" aria-labelledby="how-h">
+      <h2 id="how-h" class="h-small">Cum funcționează</h2>
+      <ol class="steps">
+        <li>Alegi un scenariu pentru fiecare cuplu, înainte de ediție.</li>
+        <li>După ediție, cotele se mișcă în funcție de ce s-a întâmplat.</li>
+        <li>La final, predicțiile corecte făcute devreme aduc cele mai multe puncte.</li>
+      </ol>
+    </section>
+  </aside>
+</div>
+
+{show.news && show.news.length > 0 && (
+  <div class="block">
+    <NewsList items={show.news} title="Știri despre emisiune" />
+  </div>
+)}

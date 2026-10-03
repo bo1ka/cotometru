@@ -1,0 +1,65 @@
+---
+import type { Show } from '../data/types';
+import { latest, cota, changeLabel, spark, ranked } from '../lib/odds';
+
+interface Props {
+  show: Show;
+}
+
+const { show } = Astro.props;
+const season = show.season!;
+const rows = ranked(season.couples).map((c, k) => ({ c, rank: k + 1, now: latest(c) }));
+const lastEpisode = season.episodes.length;
+---
+<section class="card" aria-labelledby="board-h">
+  <div class="card-head">
+    <h2 id="board-h">{season.question}</h2>
+    <div class="legend">
+      <span><i class="dot bg-t"></i>Împreună</span>
+      <span><i class="dot bg-s"></i>Separat</span>
+      <span><i class="dot bg-i"></i>Cu o ispită</span>
+    </div>
+  </div>
+  <div class="scroll-x">
+    <div class="board">
+      <div class="board-row board-headings">
+        <div>#</div>
+        <div>Cuplu</div>
+        <div>Evoluție</div>
+        <div>Împreună</div>
+        <div>Față de ed. {lastEpisode - 1}</div>
+        <div>Scenarii</div>
+        <div>Cotă</div>
+        <div></div>
+      </div>
+      {rows.map(({ c, rank, now }) => (
+        <div class="board-row">
+          <div class="mono muted">{rank}</div>
+          <div class="couple-name">{c.a.name} & {c.b.name}</div>
+          <svg viewBox="0 0 96 28" class="spark" aria-hidden="true">
+            <polyline points={spark(c.history.together)} />
+          </svg>
+          <div class="mono pct">{now.t}%</div>
+          <div class:list={['mono', 'chg', now.change > 0 ? 'up' : now.change < 0 ? 'down' : '']}>{changeLabel(now.change)}</div>
+          <svg
+            viewBox="0 0 100 8"
+            preserveAspectRatio="none"
+            class="bar"
+            role="img"
+            aria-label={`Împreună ${now.t}%, separat ${now.s}%, cu o ispită ${now.i}%`}
+          >
+            <rect x="0" y="0" width={now.t} height="8" class="fill-t" />
+            <rect x={now.t} y="0" width={now.s} height="8" class="fill-s" />
+            <rect x={now.t + now.s} y="0" width={now.i} height="8" class="fill-i" />
+          </svg>
+          <div class="mono">{cota(now.t)}</div>
+          <a href={`/${show.slug}/${c.slug}/`} class="row-link">Detalii</a>
+        </div>
+      ))}
+    </div>
+  </div>
+  <p class="fine">
+    Cote actualizate după fiecare ediție, din predicțiile comunității și din ce s-a văzut la TV. Fără bani și fără mize. Cota
+    arată câte puncte aduce o predicție corectă pentru fiecare 100 de puncte de bază.
+  </p>
+</section>

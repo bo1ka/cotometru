@@ -1,0 +1,54 @@
+---
+import type { Couple, Episode } from '../data/types';
+import { series } from '../lib/odds';
+
+interface Props {
+  couple: Couple;
+  episodes: Episode[];
+}
+
+const { couple, episodes } = Astro.props;
+const s = series(couple);
+const n = s.t.length;
+const X0 = 40;
+const X1 = 680;
+const Y0 = 280;
+const K = 2.6;
+const x = (k: number) => (n === 1 ? X0 : X0 + (k * (X1 - X0)) / (n - 1));
+const y = (p: number) => Y0 - p * K;
+const pts = (v: number[]) => v.map((p, k) => `${x(k).toFixed(1)},${y(p).toFixed(1)}`).join(' ');
+
+const lines = [
+  { label: 'Ispită', values: s.i, cls: 'i' },
+  { label: 'Separat', values: s.s, cls: 's' },
+  { label: 'Împreună', values: s.t, cls: 't' },
+];
+
+const ends = lines
+  .map((l) => ({ ...l, last: l.values[n - 1], ey: y(l.values[n - 1]), ly: y(l.values[n - 1]) }))
+  .sort((p, q) => p.ey - q.ey);
+for (let k = 1; k < ends.length; k++) {
+  if (ends[k].ly - ends[k - 1].ly < 18) ends[k].ly = ends[k - 1].ly + 18;
+}
+
+const grid = [0, 25, 50, 75, 100];
+const summary = `Împreună: de la ${s.t[0]}% la ${s.t[n - 1]}%. Separat: de la ${s.s[0]}% la ${s.s[n - 1]}%. Cu o ispită: de la ${s.i[0]}% la ${s.i[n - 1]}%.`;
+---
+<svg viewBox="0 0 800 310" class="chart" role="img" aria-label={summary}>
+  {grid.map((g) => (
+    <>
+      <line x1={X0} y1={y(g)} x2={X1} y2={y(g)} class:list={['grid', { base: g === 0 }]} />
+      <text x={X0 - 10} y={y(g) + 4} text-anchor="end" class="axis">{g}</text>
+    </>
+  ))}
+  {lines.map((l) => <polyline points={pts(l.values)} class={`line line-${l.cls}`} />)}
+  {ends.map((e) => (
+    <>
+      <circle cx={X1} cy={e.ey} r="5" class={`fill-${e.cls}`} />
+      <text x={X1 + 14} y={e.ly + 5} class={`end-label text-${e.cls}`}>{e.label} {e.last}%</text>
+    </>
+  ))}
+  {episodes.slice(0, n).map((ep, k) => (
+    <text x={x(k)} y="304" text-anchor="middle" class="axis">Ed. {ep.number}</text>
+  ))}
+</svg>

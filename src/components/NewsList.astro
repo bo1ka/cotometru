@@ -1,0 +1,36 @@
+---
+import type { NewsItem } from '../data/types';
+
+interface Props {
+  items: NewsItem[];
+  title: string;
+  compact?: boolean;
+}
+
+const { items, title, compact = false } = Astro.props;
+---
+<section class="card" aria-labelledby="news-h">
+  <div class="card-head">
+    <h2 id="news-h" class:list={[{ 'h-small': compact }]}>{title}</h2>
+    {!compact && <div class="fine no-margin">Titluri verificate de redacție. Linkurile duc la publicația sursă.</div>}
+  </div>
+  <ul class="news">
+    {items.map((n) => (
+      <li class:list={['news-item', { compact }]}>
+        <div class="mono news-meta">{[n.date, n.source].filter(Boolean).join(' · ')}</div>
+        {n.kind === 'rumor' ? (
+          <details class="news-title">
+            <summary>Titlu ascuns: posibil spoiler. Apasă ca să îl vezi</summary>
+            <a href={n.url} rel="noopener nofollow" target="_blank">{n.title}</a>
+          </details>
+        ) : (
+          <a href={n.url} class="news-title" rel="noopener" target="_blank">{n.title}</a>
+        )}
+        <span class:list={['badge', n.kind === 'rumor' ? 'badge-rumor' : 'badge-aired']}>
+          {n.kind === 'rumor' ? 'Zvon neconfirmat' : 'Difuzat la TV'}
+        </span>
+      </li>
+    ))}
+  </ul>
+  {!compact && <p class="fine">Zvonurile nu influențează cotele. Contează doar ce a fost difuzat.</p>}
+</section>

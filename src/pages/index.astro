@@ -1,0 +1,15 @@
+---
+import Base from '../layouts/Base.astro';
+import ShowPage from '../components/ShowPage.astro';
+import { liveShows } from '../data/shows';
+
+const show = liveShows[0];
+---
+<Base
+  title={`Cotometru: cote și predicții pentru ${show.name}`}
+  description={`Cotele fiecărui cuplu din ${show.name}, actualizate după fiecare ediție. Joc de predicții pe puncte, fără bani.`}
+  canonical={`/${show.slug}/`}
+  activeShow={show.slug}
+>
+  <ShowPage show={show} />
+</Base>

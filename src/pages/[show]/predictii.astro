@@ -1,0 +1,80 @@
+---
+import Base from '../../layouts/Base.astro';
+import PredictionPicker from '../../components/PredictionPicker.astro';
+import { liveShows } from '../../data/shows';
+import { ranked } from '../../lib/odds';
+import type { Show } from '../../data/types';
+
+export function getStaticPaths() {
+  return liveShows.map((show) => ({ params: { show: show.slug }, props: { show } }));
+}
+
+interface Props {
+  show: Show;
+}
+
+const { show } = Astro.props;
+const season = show.season!;
+const next = season.nextEpisode;
+const couples = ranked(season.couples);
+---
+<Base
+  title={`Predicții ${show.name}, sezonul ${season.number} | Cotometru`}
+  description={`Alege cum pleacă fiecare cuplu din ${show.name}. Joc de predicții pe puncte, fără bani.`}
+  activeShow={show.slug}
+>
+  <nav aria-label="Navigare" class="crumbs">
+    <a href={`/${show.slug}/`}>{show.name}</a>
+    <span aria-hidden="true">/</span>
+    <span class="here">Predicții</span>
+  </nav>
+
+  <section class="intro">
+    <div class="kicker">Sezonul {season.number}{next ? ` · Înainte de ediția ${next.number}` : ''}</div>
+    <h1 class="h-couple">Predicțiile tale</h1>
+    <p class="lead">Alege un scenariu pentru fiecare cuplu. Cu cât cota e mai mare, cu atât predicția corectă aduce mai multe puncte.</p>
+  </section>
+
+  <div class="picker-grid">
+    {couples.map((c) => (
+      <div class="picker-cell">
+        <PredictionPicker
+          id={`${show.slug}-s${season.number}-${c.slug}`}
+          couple={c}
+          closes={next?.closes}
+          title={`${c.a.name} și ${c.b.name}`}
+        />
+        <a href={`/${show.slug}/${c.slug}/`} class="cell-link">Vezi evoluția cuplului</a>
+      </div>
+    ))}
+  </div>
+</Base>
+
+<style>
+  .intro {
+    padding: 20px 0 28px;
+  }
+
+  .intro .lead {
+    margin-top: 14px;
+  }
+
+  .picker-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 24px;
+    align-items: start;
+  }
+
+  .picker-cell {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+  }
+
+  .cell-link {
+    padding: 10px 2px;
+    font-size: 14px;
+    font-weight: 500;
+  }
+</style>

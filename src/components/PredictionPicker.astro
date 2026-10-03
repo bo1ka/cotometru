@@ -1,0 +1,71 @@
+---
+import type { Couple } from '../data/types';
+import { latest, cota, points } from '../lib/odds';
+
+interface Props {
+  id: string;
+  couple: Couple;
+  closes?: string;
+  title?: string;
+}
+
+const { id, couple, closes, title = 'Predicția ta: cum pleacă de pe insulă?' } = Astro.props;
+const headingId = `pick-${id}`;
+const now = latest(couple);
+const options = [
+  { key: 't', label: 'Pleacă împreună', p: now.t },
+  { key: 's', label: 'Pleacă separat', p: now.s },
+  { key: 'i', label: 'Unul pleacă cu o ispită', p: now.i },
+];
+---
+<section class="card" aria-labelledby={headingId} data-picker={id}>
+  {closes && <div class="kicker warm">Se închide la {closes}</div>}
+  <h2 id={headingId} class="h-small">{title}</h2>
+  <div class="options">
+    {options.map((o) => (
+      <button type="button" class="option option-lg" data-option={o.key} data-gain={points(o.p)} aria-pressed="false">
+        <span>{o.label}</span>
+        <span class="mono strong">{cota(o.p)}</span>
+      </button>
+    ))}
+  </div>
+  <div class="gain" data-gain-box hidden>
+    <div class="soft">Dacă ai dreptate la final</div>
+    <div class="mono gain-value">+<span data-gain-value></span> puncte</div>
+  </div>
+  <p class="fine">Deocamdată predicția se salvează doar pe acest dispozitiv. Clasamentul apare după lansare.</p>
+</section>
+
+<script>
+  document.querySelectorAll<HTMLElement>('[data-picker]').forEach((picker) => {
+    const key = `pick:${picker.dataset.picker}`;
+    const buttons = picker.querySelectorAll<HTMLButtonElement>('[data-option]');
+    const box = picker.querySelector<HTMLElement>('[data-gain-box]');
+    const value = picker.querySelector<HTMLElement>('[data-gain-value]');
+    const select = (option: string | null) => {
+      buttons.forEach((b) => {
+        const on = b.dataset.option === option;
+        b.classList.toggle('selected', on);
+        b.setAttribute('aria-pressed', String(on));
+        if (on && box && value) {
+          value.textContent = b.dataset.gain ?? '';
+          box.hidden = false;
+        }
+      });
+    };
+    let saved: string | null = null;
+    try {
+      saved = localStorage.getItem(key);
+    } catch {}
+    if (saved !== null) select(saved);
+    buttons.forEach((b) =>
+      b.addEventListener('click', () => {
+        const option = b.dataset.option ?? null;
+        select(option);
+        try {
+          if (option !== null) localStorage.setItem(key, option);
+        } catch {}
+      })
+    );
+  });
+</script>

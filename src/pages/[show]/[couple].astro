@@ -1,0 +1,162 @@
+---
+import Base from '../../layouts/Base.astro';
+import OddsChart from '../../components/OddsChart.astro';
+import PredictionPicker from '../../components/PredictionPicker.astro';
+import NewsList from '../../components/NewsList.astro';
+import { liveShows } from '../../data/shows';
+import { latest, changeLabel, series } from '../../lib/odds';
+import type { Couple, Show } from '../../data/types';
+
+export function getStaticPaths() {
+  return liveShows.flatMap((show) =>
+    show.season!.couples.map((couple) => ({
+      params: { show: show.slug, couple: couple.slug },
+      props: { show, couple },
+    }))
+  );
+}
+
+interface Props {
+  show: Show;
+  couple: Couple;
+}
+
+const { show, couple } = Astro.props;
+const season = show.season!;
+const now = latest(couple);
+const s = series(couple);
+const lastEpisode = season.episodes.length;
+const initials = (name: string) =>
+  name
+    .split(' ')
+    .map((w) => w[0])
+    .join('')
+    .slice(0, 2)
+    .toUpperCase();
+const people = [couple.a, couple.b];
+const timeline = season.episodes
+  .map((ep, k) => ({
+    ep,
+    text: couple.notes?.[ep.number] ?? ep.summary,
+    change: k > 0 ? s.t[k] - s.t[k - 1] : null,
+    start: s.t[0],
+  }))
+  .filter((row) => row.text)
+  .reverse();
+const news = (show.news ?? []).filter((n) => n.couples?.includes(couple.slug));
+const fullName = `${couple.a.name} și ${couple.b.name}`;
+---
+<Base
+  title={`${fullName}: cote ${show.name} | Cotometru`}
+  description={`${now.t}% șanse să plece împreună după ediția ${lastEpisode}. Evoluția cotelor pentru ${fullName} la ${show.name}.`}
+  activeShow={show.slug}
+>
+  <nav aria-label="Navigare" class="crumbs">
+    <a href={`/${show.slug}/`}>{show.name}</a>
+    <span aria-hidden="true">/</span>
+    <span>Sezonul {season.number}</span>
+    <span aria-hidden="true">/</span>
+    <span class="here">{couple.shortName}</span>
+  </nav>
+
+  <section class="couple-head">
+    <div>
+      {couple.together && <div class="kicker">Cuplu · Împreună de {couple.together.toLowerCase()}</div>}
+      <h1 class="h-couple">{fullName}</h1>
+    </div>
+    <div class="big-stat">
+      <div class="mono big-pct">{now.t}%</div>
+      <div>
+        <div class="strong">șanse să plece împreună</div>
+        <div class:list={['mono', 'chg', now.change > 0 ? 'up' : now.change < 0 ? 'down' : '']}>
+          {changeLabel(now.change)} după ediția {lastEpisode}
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <div class="columns">
+    <div class="col-main stack">
+      <section class="card" aria-labelledby="about-h">
+        <h2 id="about-h">Despre cuplu</h2>
+        <div class="people">
+          {people.map((p) => (
+            <div class="person">
+              <div class="avatar" aria-hidden="true">{initials(p.name)}</div>
+              <div>
+                <div class="person-name">{p.name}{p.age ? `, ${p.age} de ani` : ''}</div>
+                {p.role && <div class="soft">{p.role}</div>}
+              </div>
+            </div>
+          ))}
+        </div>
+        <dl class="facts facts-tight">
+          {couple.together && (
+            <div>
+              <dt>Împreună de</dt>
+              <dd>{couple.together}</dd>
+            </div>
+          )}
+          {couple.status && (
+            <div>
+              <dt>Statut</dt>
+              <dd>{couple.status}</dd>
+            </div>
+          )}
+          {couple.location && (
+            <div>
+              <dt>Locuiesc în</dt>
+              <dd>{couple.location}</dd>
+            </div>
+          )}
+          {couple.why && (
+            <div class="wide">
+              <dt>De ce au venit pe insulă</dt>
+              <dd>{couple.why}</dd>
+            </div>
+          )}
+        </dl>
+        {couple.source && (
+          <p class="fine">
+            Sursa: <a href={couple.source.url} rel="noopener" target="_blank">{couple.source.label}</a>. Text rescris de redacția noastră.
+          </p>
+        )}
+      </section>
+
+      <section class="card" aria-labelledby="chart-h">
+        <h2 id="chart-h">Cum s-au mișcat cotele</h2>
+        <p class="fine no-top">Probabilitatea fiecărui scenariu, după fiecare ediție difuzată.</p>
+        <OddsChart couple={couple} episodes={season.episodes} />
+      </section>
+
+      {timeline.length > 0 && (
+        <section class="card" aria-labelledby="tl-h">
+          <h2 id="tl-h">Ce s-a întâmplat, ediție cu ediție</h2>
+          <ol class="timeline">
+            {timeline.map((row) => (
+              <li>
+                <div class="mono news-meta">Ed. {row.ep.number} · {row.ep.date}</div>
+                <div class="tl-text">{row.text}</div>
+                {row.change === null ? (
+                  <div class="mono soft">{row.start}% la start</div>
+                ) : (
+                  <div class:list={['mono', 'chg', row.change > 0 ? 'up' : row.change < 0 ? 'down' : '']}>{changeLabel(row.change)}</div>
+                )}
+              </li>
+            ))}
+          </ol>
+        </section>
+      )}
+    </div>
+
+    <aside class="col-side">
+      <PredictionPicker id={`${show.slug}-s${season.number}-${couple.slug}`} couple={couple} closes={season.nextEpisode?.closes} />
+      <section class="card outline" aria-labelledby="calc-h">
+        <h2 id="calc-h" class="h-small">De unde vine cota</h2>
+        <p class="soft no-top">Din predicțiile comunității și dintr-un scor pe evenimentele din ediții.</p>
+        <p class="fine">Ținem cont doar de ce a fost difuzat. Fără spoilere și fără zvonuri din culise.</p>
+      </section>
+      {news.length > 0 && <NewsList items={news} title="Știri despre cuplu" compact />}
+    </aside>
+  </div>
+</Base>

@@ -1,0 +1,26 @@
+---
+import { shows } from '../data/shows';
+
+interface Props {
+  activeShow?: string;
+}
+
+const { activeShow } = Astro.props;
+---
+<header class="site-header">
+  <div class="container header-row">
+    <a href="/" class="logo">Coto<span>metru</span></a>
+    <nav aria-label="Emisiuni" class="show-nav">
+      {shows.map((s) =>
+        s.status === 'live' ? (
+          <a href={`/${s.slug}/`} class:list={['show-tab', { active: s.slug === activeShow }]}>{s.name}</a>
+        ) : (
+          <span class="show-tab soon">
+            {s.name} <span class="tag">în curând</span>
+          </span>
+        )
+      )}
+    </nav>
+    <a href="/#cum-functioneaza" class="header-link">Cum funcționează</a>
+  </div>
+</header>

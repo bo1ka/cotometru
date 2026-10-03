@@ -1,0 +1,51 @@
+---
+interface Props {
+  id: string;
+  question: string;
+  options: string[];
+}
+
+const { id, question, options } = Astro.props;
+---
+<section class="card" aria-labelledby="poll-h" data-poll={id}>
+  <div class="kicker warm">Întrebarea serii</div>
+  <h2 id="poll-h" class="h-small">{question}</h2>
+  <div class="options">
+    {options.map((o, k) => (
+      <button type="button" class="option" data-option={k} aria-pressed="false">
+        {o}
+      </button>
+    ))}
+  </div>
+  <p class="fine" data-poll-status>Alege un răspuns. Rezultatele comunității apar aici după lansare.</p>
+</section>
+
+<script>
+  document.querySelectorAll<HTMLElement>('[data-poll]').forEach((poll) => {
+    const key = `poll:${poll.dataset.poll}`;
+    const buttons = poll.querySelectorAll<HTMLButtonElement>('[data-option]');
+    const status = poll.querySelector<HTMLElement>('[data-poll-status]');
+    const select = (value: string | null) => {
+      buttons.forEach((b) => {
+        const on = b.dataset.option === value;
+        b.classList.toggle('selected', on);
+        b.setAttribute('aria-pressed', String(on));
+      });
+      if (value !== null && status) status.textContent = 'Răspunsul tău a fost salvat pe acest dispozitiv.';
+    };
+    let saved: string | null = null;
+    try {
+      saved = localStorage.getItem(key);
+    } catch {}
+    if (saved !== null) select(saved);
+    buttons.forEach((b) =>
+      b.addEventListener('click', () => {
+        const value = b.dataset.option ?? null;
+        select(value);
+        try {
+          if (value !== null) localStorage.setItem(key, value);
+        } catch {}
+      })
+    );
+  });
+</script>

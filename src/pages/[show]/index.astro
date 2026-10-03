@@ -1,0 +1,23 @@
+---
+import Base from '../../layouts/Base.astro';
+import ShowPage from '../../components/ShowPage.astro';
+import { liveShows } from '../../data/shows';
+import type { Show } from '../../data/types';
+
+export function getStaticPaths() {
+  return liveShows.map((show) => ({ params: { show: show.slug }, props: { show } }));
+}
+
+interface Props {
+  show: Show;
+}
+
+const { show } = Astro.props;
+---
+<Base
+  title={`${show.name}, sezonul ${show.season!.number}: cotele cuplurilor | Cotometru`}
+  description={`Cotele fiecărui cuplu din ${show.name}, actualizate după fiecare ediție. Joc de predicții pe puncte, fără bani.`}
+  activeShow={show.slug}
+>
+  <ShowPage show={show} />
+</Base>

@@ -25,7 +25,6 @@ const units = [
   <div class="hero-main">
     <div class="kicker">Sezonul {season.number} · După ediția {season.episodes.length}</div>
     <h1>{show.name}</h1>
-    {show.image && <img src={show.image.src} alt={show.image.alt} class="hero-image" />}
     {show.description && <p class="lead">{show.description}</p>}
     {show.facts && (
       <dl class="facts">
@@ -45,34 +44,37 @@ const units = [
       </div>
     )}
   </div>
-  {season.schedule && (
-    <div class="card next-card" data-schedule={JSON.stringify(season.schedule)} hidden={!info}>
-      <div class="kicker muted">Urmează</div>
-      <div class="next-title">Ediția <span data-next="number">{info?.number}</span></div>
-      <div class="soft" data-next="when">{info?.when}</div>
-      <div class="flip" data-flip aria-hidden="true">
-        {units.map((u) => (
-          <div class="flip-group" data-unit={u.key} hidden={u.key === 'd'}>
-            <div class="flip-digits">
-              <span class="flip-card">0</span>
-              <span class="flip-card">0</span>
-            </div>
-            <div class="flip-label">{u.label}</div>
-          </div>
-        ))}
-      </div>
-      <div class="sr-only" role="timer" data-next="countdown"></div>
-      <div class="warm strong">Predicțiile se închid la <span data-next="closesTime">{info?.closesTime}</span></div>
-      <a href={`/${show.slug}/predictii/`} class="button">Fă-ți predicțiile</a>
-    </div>
-  )}
+  {show.image && <img src={show.image.src} alt={show.image.alt} class="hero-image" />}
 </section>
 
 <div class="columns">
-  <div class="col-main">
+  <div class="col-main stack">
     <OddsBoard show={show} />
+    <AdSlot format="banner" />
+    {show.news && show.news.length > 0 && <NewsList items={show.news} title="Știri despre emisiune" />}
   </div>
   <aside class="col-side">
+    {season.schedule && (
+      <div class="card next-card" data-schedule={JSON.stringify(season.schedule)} hidden={!info}>
+        <div class="kicker muted">Urmează</div>
+        <div class="next-title">Ediția <span data-next="number">{info?.number}</span></div>
+        <div class="soft" data-next="when">{info?.when}</div>
+        <div class="flip" data-flip aria-hidden="true">
+          {units.map((u) => (
+            <div class="flip-group" data-unit={u.key} hidden={u.key === 'd'}>
+              <div class="flip-digits">
+                <span class="flip-card">0</span>
+                <span class="flip-card">0</span>
+              </div>
+              <div class="flip-label">{u.label}</div>
+            </div>
+          ))}
+        </div>
+        <div class="sr-only" role="timer" data-next="countdown"></div>
+        <div class="warm strong">Predicțiile se închid la <span data-next="closesTime">{info?.closesTime}</span></div>
+        <a href={`/${show.slug}/predictii/`} class="button">Fă-ți predicțiile</a>
+      </div>
+    )}
     {show.poll && <Poll id={`${show.slug}-s${season.number}`} question={show.poll.question} options={show.poll.options} />}
     <section class="card outline" id="cum-functioneaza" aria-labelledby="how-h">
       <h2 id="how-h" class="h-small">Cum funcționează</h2>
@@ -100,13 +102,3 @@ const units = [
     <AdSlot format="rectangle" />
   </aside>
 </div>
-
-<div class="block">
-  <AdSlot format="banner" />
-</div>
-
-{show.news && show.news.length > 0 && (
-  <div class="block">
-    <NewsList items={show.news} title="Știri despre emisiune" />
-  </div>
-)}

@@ -1,0 +1,38 @@
+---
+import Base from '../layouts/Base.astro';
+import { legal } from '../data/legal';
+---
+<Base title="Despre și contact | Cotometru" description="Ce este Cotometru, cine îl operează și cum ne poți contacta.">
+  <article class="prose">
+    <h1>Despre Cotometru</h1>
+    <p>
+      Cotometru este un site independent, făcut de fani, care urmărește emisiunile de tip reality și arată, sub formă de cote,
+      cât de probabil pare fiecare deznodământ. Este un joc de predicții pe puncte. Nu se joacă pe bani și nu există premii.
+    </p>
+
+    <h2>Cum funcționează cotele</h2>
+    <p>
+      Cotele pornesc de la ce s-a văzut în edițiile difuzate și de la predicțiile comunității. Sunt estimări orientative, nu
+      informații din culise și nu afirmații despre viața privată a participanților.
+    </p>
+    <p>În versiunea de test, cotele afișate sunt date demonstrative. Site-ul semnalează acest lucru în partea de sus a paginii.</p>
+
+    <h2>Independență</h2>
+    <p>
+      Cotometru nu este afiliat cu posturile TV, cu producătorii sau cu participanții emisiunilor. Numele emisiunilor și mărcile
+      aparțin titularilor lor și sunt folosite doar pentru a identifica emisiunile despre care scriem.
+    </p>
+
+    <h2>Cine operează site-ul</h2>
+    <p>{legal.operator}</p>
+
+    <h2>Contact</h2>
+    <p>Ne poți scrie la {legal.email}.</p>
+
+    <h2>Corecturi și solicitări</h2>
+    <p>
+      Dacă apari într-o emisiune urmărită de site și consideri că o informație este greșită sau vrei să fie eliminată, scrie-ne la
+      adresa de mai sus. Răspundem cât de repede putem și corectăm ce este greșit.
+    </p>
+  </article>
+</Base>

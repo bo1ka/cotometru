@@ -1,0 +1,75 @@
+---
+import Base from '../layouts/Base.astro';
+import { legal } from '../data/legal';
+---
+<Base title="Politica de confidențialitate | Cotometru" description="Ce date prelucrează Cotometru, de ce și ce drepturi ai.">
+  <article class="prose">
+    <h1>Politica de confidențialitate</h1>
+    <p class="fine no-top">Ultima actualizare: {legal.updated}</p>
+
+    <h2>Cine este operatorul</h2>
+    <p>Operatorul datelor este {legal.operator}. Ne poți contacta la {legal.email}.</p>
+
+    <h2>Pe scurt</h2>
+    <ul>
+      <li>Nu ai nevoie de cont și nu îți cerem numele sau adresa de email.</li>
+      <li>Alegerile tale (tema, răspunsul la sondaj, predicțiile) rămân în browserul tău și nu ajung la noi.</li>
+      <li>Nu folosim cookie-uri de publicitate sau de urmărire.</li>
+    </ul>
+
+    <h2>Ce date sunt prelucrate</h2>
+    <h3>Date păstrate în browserul tău</h3>
+    <p>
+      Site-ul salvează în stocarea locală a browserului tema aleasă, răspunsul tău la întrebarea serii și predicțiile făcute.
+      Aceste date rămân pe dispozitivul tău. Detalii găsești în <a href="/cookie-uri/">pagina despre cookie-uri</a>.
+    </p>
+    <h3>Date tehnice</h3>
+    <p>
+      Site-ul este găzduit de Cloudflare. Pentru a livra paginile și a proteja site-ul, Cloudflare prelucrează date tehnice ale
+      fiecărei cereri, cum ar fi adresa IP, tipul de browser și pagina cerută.
+    </p>
+    <h3>Fonturi</h3>
+    <p>
+      Fonturile sunt încărcate de la Google Fonts. La afișarea paginii, browserul tău se conectează la serverele Google, care
+      primesc adresa ta IP.
+    </p>
+
+    <h2>De ce și pe ce temei</h2>
+    <p>
+      Prelucrăm datele tehnice pentru funcționarea și securitatea site-ului, în baza interesului nostru legitim (art. 6 alin. 1
+      lit. f din GDPR).
+    </p>
+
+    <h2>Cine primește datele</h2>
+    <p>
+      Furnizorii noștri tehnici, Cloudflare și Google, în rolul descris mai sus. Aceștia pot prelucra date și în afara Spațiului
+      Economic European, cu garanțiile prevăzute de GDPR. Nu vindem date și nu le folosim pentru publicitate.
+    </p>
+
+    <h2>Cât timp sunt păstrate</h2>
+    <p>
+      Datele din browserul tău rămân până le ștergi. Noi nu păstrăm evidențe despre vizitatori individuali. Furnizorii tehnici
+      păstrează jurnalele tehnice conform propriilor politici.
+    </p>
+
+    <h2>Drepturile tale</h2>
+    <p>
+      Ai dreptul de acces, de rectificare, de ștergere, de restricționare, de opoziție și de portabilitate a datelor. Pentru a le
+      exercita, scrie-ne la {legal.email}. Dacă consideri că datele tale nu sunt prelucrate corect, poți depune o plângere la
+      Autoritatea Națională de Supraveghere a Prelucrării Datelor cu Caracter Personal (<a
+        href="https://www.dataprotection.ro"
+        rel="noopener"
+        target="_blank">dataprotection.ro</a
+      >).
+    </p>
+
+    <h2>Vârsta</h2>
+    <p>Site-ul se adresează persoanelor de cel puțin {legal.minAge} ani.</p>
+
+    <h2>Modificări</h2>
+    <p>
+      Dacă adăugăm funcții noi, cum ar fi conturi, statistici de trafic sau publicitate, actualizăm această pagină înainte ca
+      ele să fie active și, acolo unde legea o cere, îți cerem acordul.
+    </p>
+  </article>
+</Base>

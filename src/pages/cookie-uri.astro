@@ -1,0 +1,68 @@
+---
+import Base from '../layouts/Base.astro';
+import { legal } from '../data/legal';
+---
+<Base title="Cookie-uri și stocare locală | Cotometru" description="Ce păstrează Cotometru în browserul tău și cum poți șterge aceste date.">
+  <article class="prose">
+    <h1>Cookie-uri și stocare locală</h1>
+    <p class="fine no-top">Ultima actualizare: {legal.updated}</p>
+
+    <h2>Pe scurt</h2>
+    <p>
+      Cotometru nu folosește cookie-uri de publicitate sau de urmărire. Site-ul păstrează câteva alegeri ale tale în stocarea
+      locală a browserului, ca să le regăsești la următoarea vizită.
+    </p>
+
+    <h2>Ce se păstrează în browserul tău</h2>
+    <div class="scroll-x">
+      <table>
+        <thead>
+          <tr>
+            <th>Nume</th>
+            <th>La ce folosește</th>
+            <th>Cât timp</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td class="mono">theme</td>
+            <td>Tema aleasă, deschisă sau închisă</td>
+            <td>Până o ștergi</td>
+          </tr>
+          <tr>
+            <td class="mono">poll:…</td>
+            <td>Răspunsul tău la întrebarea serii</td>
+            <td>Până o ștergi</td>
+          </tr>
+          <tr>
+            <td class="mono">pick:…</td>
+            <td>Predicțiile tale pentru fiecare cuplu</td>
+            <td>Până o ștergi</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <p>Aceste date sunt strict necesare pentru funcțiile pe care le folosești și nu sunt trimise către noi.</p>
+
+    <h2>Cookie-uri ale furnizorilor tehnici</h2>
+    <p>
+      Cloudflare, furnizorul nostru de găzduire, poate seta cookie-uri strict necesare pentru securitate și protecție împotriva
+      traficului automat.
+    </p>
+
+    <h2>Cum ștergi datele</h2>
+    <p>
+      Le poți șterge oricând din setările browserului, din secțiunea despre datele site-urilor. După ștergere, site-ul revine la
+      setările implicite.
+    </p>
+
+    <h2>Ce se poate schimba</h2>
+    <p>
+      Dacă vom adăuga statistici de trafic sau publicitate care folosesc cookie-uri, îți vom cere acordul înainte și vom
+      actualiza această pagină.
+    </p>
+
+    <h2>Contact</h2>
+    <p>Pentru întrebări, scrie-ne la {legal.email}.</p>
+  </article>
+</Base>

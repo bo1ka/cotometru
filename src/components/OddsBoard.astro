@@ -30,12 +30,11 @@ const lastEpisode = season.episodes.length;
         <div>Față de ed. {lastEpisode - 1}</div>
         <div>Scenarii</div>
         <div>Cotă</div>
-        <div></div>
       </div>
       {rows.map(({ c, rank, now }) => (
         <div class="board-row">
           <div class="mono muted">{rank}</div>
-          <div class="couple-name">{c.a.name} & {c.b.name}</div>
+          <a href={`/${show.slug}/${c.slug}/`} class="couple-name">{c.a.name} & {c.b.name}</a>
           <svg viewBox="0 0 96 28" class="spark" aria-hidden="true">
             <polyline points={spark(c.history.together)} />
           </svg>
@@ -53,7 +52,6 @@ const lastEpisode = season.episodes.length;
             <rect x={now.t + now.s} y="0" width={now.i} height="8" class="fill-i" />
           </svg>
           <div class="mono">{cota(now.t)}</div>
-          <a href={`/${show.slug}/${c.slug}/`} class="row-link">Detalii</a>
         </div>
       ))}
     </div>

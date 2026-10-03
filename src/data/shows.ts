@@ -23,7 +23,12 @@ export const shows: Show[] = [
     ],
     links: [
       { label: 'Site oficial Antena 1', url: 'https://a1.ro/insula-iubirii/' },
-      { label: 'Vezi pe AntenaPLAY', url: 'https://antenaplay.ro/insula-iubirii' },
+      {
+        label: 'Vezi pe AntenaPLAY',
+        url: 'https://antenaplay.ro/insula-iubirii',
+        prefix: 'Vezi pe',
+        logo: { dark: '/images/antenaplay-dark.png', light: '/images/antenaplay-light.png', alt: 'AntenaPLAY' },
+      },
     ],
     community: [],
     poll: {

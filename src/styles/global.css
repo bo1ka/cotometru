@@ -520,12 +520,12 @@ main.container {
 }
 
 .board {
-  min-width: 760px;
+  min-width: 680px;
 }
 
 .board-row {
   display: grid;
-  grid-template-columns: 28px minmax(190px, 1.6fr) 100px 96px 80px minmax(130px, 1fr) 64px 70px;
+  grid-template-columns: 28px minmax(190px, 1.6fr) 100px 96px 80px minmax(130px, 1fr) 64px;
   gap: 14px;
   align-items: center;
   padding: 18px 0;
@@ -542,8 +542,18 @@ main.container {
 }
 
 .couple-name {
+  display: flex;
+  align-items: center;
+  min-height: 44px;
   font-weight: 600;
   font-size: 16px;
+  color: var(--text);
+  text-decoration: none;
+}
+
+.couple-name:hover {
+  color: var(--t-text);
+  text-decoration: underline;
 }
 
 .spark {
@@ -584,12 +594,6 @@ main.container {
   height: 10px;
   display: block;
   border-radius: 5px;
-}
-
-.row-link {
-  padding: 12px 0;
-  font-size: 14px;
-  font-weight: 500;
 }
 
 .options {
@@ -895,12 +899,13 @@ a.news-title,
   display: inline-flex;
   align-items: center;
   min-height: 44px;
-  padding: 0 16px;
-  border: 1px solid var(--line-strong);
-  border-radius: 8px;
+  padding: 0 18px;
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: 10px;
   color: var(--text);
   text-decoration: none;
-  font-weight: 500;
+  font-weight: 600;
 }
 
 .pill-link:hover {
@@ -1083,4 +1088,19 @@ a.news-title,
   text-transform: uppercase;
   letter-spacing: 0.06em;
   color: var(--muted);
+}
+
+.pill-logo {
+  gap: 10px;
+}
+
+:root[data-theme='light'] .logo-on-dark,
+:root:not([data-theme='light']) .logo-on-light {
+  display: none;
+}
+
+.pill-logo img {
+  height: 20px;
+  width: auto;
+  display: block;
 }

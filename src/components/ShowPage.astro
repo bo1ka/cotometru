@@ -39,7 +39,22 @@ const units = [
     {show.links && show.links.length > 0 && (
       <div class="hero-links">
         {show.links.map((l) => (
-          <a href={l.url} class="pill-link" rel="noopener" target="_blank">{l.label}</a>
+          <a
+            href={l.url}
+            class:list={['pill-link', { 'pill-logo': l.logo }]}
+            rel="noopener"
+            target="_blank"
+          >
+            {l.logo ? (
+              <>
+                {l.prefix && <span>{l.prefix}</span>}
+                <img src={l.logo.dark} alt={l.logo.alt} class="logo-on-dark" />
+                <img src={l.logo.light} alt={l.logo.alt} class="logo-on-light" />
+              </>
+            ) : (
+              l.label
+            )}
+          </a>
         ))}
       </div>
     )}

@@ -56,6 +56,13 @@ export interface CommunityLink {
   note?: string;
 }
 
+export interface ShowLink {
+  label: string;
+  url: string;
+  prefix?: string;
+  logo?: { dark: string; light: string; alt: string };
+}
+
 export interface Show {
   slug: string;
   name: string;
@@ -63,7 +70,7 @@ export interface Show {
   description?: string;
   image?: { src: string; alt: string };
   facts?: { label: string; value: string }[];
-  links?: { label: string; url: string }[];
+  links?: ShowLink[];
   community?: CommunityLink[];
   season?: Season;
   poll?: { question: string; options: string[] };

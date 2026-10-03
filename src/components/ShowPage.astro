@@ -4,6 +4,7 @@ import OddsBoard from './OddsBoard.astro';
 import Poll from './Poll.astro';
 import NewsList from './NewsList.astro';
 import AdSlot from './AdSlot.astro';
+import { nextAiring, describe } from '../lib/schedule';
 
 interface Props {
   show: Show;
@@ -11,7 +12,14 @@ interface Props {
 
 const { show } = Astro.props;
 const season = show.season!;
-const next = season.nextEpisode;
+const next = season.schedule ? nextAiring(season.schedule, Date.now()) : null;
+const info = next ? describe(next) : null;
+const units = [
+  { key: 'd', label: 'zile' },
+  { key: 'h', label: 'ore' },
+  { key: 'm', label: 'min' },
+  { key: 's', label: 'sec' },
+];
 ---
 <section class="hero">
   <div class="hero-main">
@@ -37,12 +45,24 @@ const next = season.nextEpisode;
       </div>
     )}
   </div>
-  {next && (
-    <div class="card next-card">
+  {season.schedule && (
+    <div class="card next-card" data-schedule={JSON.stringify(season.schedule)} hidden={!info}>
       <div class="kicker muted">Urmează</div>
-      <div class="next-title">Ediția {next.number}</div>
-      <div class="soft">{next.when}</div>
-      <div class="warm strong">Predicțiile se închid la {next.closes}</div>
+      <div class="next-title">Ediția <span data-next="number">{info?.number}</span></div>
+      <div class="soft" data-next="when">{info?.when}</div>
+      <div class="flip" data-flip aria-hidden="true">
+        {units.map((u) => (
+          <div class="flip-group" data-unit={u.key} hidden={u.key === 'd'}>
+            <div class="flip-digits">
+              <span class="flip-card">0</span>
+              <span class="flip-card">0</span>
+            </div>
+            <div class="flip-label">{u.label}</div>
+          </div>
+        ))}
+      </div>
+      <div class="sr-only" role="timer" data-next="countdown"></div>
+      <div class="warm strong">Predicțiile se închid la <span data-next="closesTime">{info?.closesTime}</span></div>
       <a href={`/${show.slug}/predictii/`} class="button">Fă-ți predicțiile</a>
     </div>
   )}
@@ -67,10 +87,14 @@ const next = season.nextEpisode;
         <h2 id="community-h" class="h-small">Comunitate</h2>
         <ul class="link-list">
           {show.community.map((g) => (
-            <li><a href={g.url} rel="noopener nofollow" target="_blank">{g.name}</a></li>
+            <li>
+              <a href={g.url} rel="noopener nofollow" target="_blank">{g.name}</a>
+              <span class="tag">{g.platform}</span>
+              {g.note && <div class="fine no-margin">{g.note}</div>}
+            </li>
           ))}
         </ul>
-        <p class="fine">Grupuri independente de fani. Pot conține spoilere și zvonuri.</p>
+        <p class="fine">Grupuri, pagini și creatori independenți care comentează emisiunea. Pot conține spoilere și zvonuri.</p>
       </section>
     )}
     <AdSlot format="rectangle" />

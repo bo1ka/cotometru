@@ -3,6 +3,7 @@ import Base from '../../layouts/Base.astro';
 import PredictionPicker from '../../components/PredictionPicker.astro';
 import { liveShows } from '../../data/shows';
 import { ranked } from '../../lib/odds';
+import { nextAiring, describe } from '../../lib/schedule';
 import type { Show } from '../../data/types';
 
 export function getStaticPaths() {
@@ -15,7 +16,8 @@ interface Props {
 
 const { show } = Astro.props;
 const season = show.season!;
-const next = season.nextEpisode;
+const next = season.schedule ? nextAiring(season.schedule, Date.now()) : null;
+const info = next ? describe(next) : null;
 const couples = ranked(season.couples);
 ---
 <Base
@@ -30,7 +32,14 @@ const couples = ranked(season.couples);
   </nav>
 
   <section class="intro">
-    <div class="kicker">Sezonul {season.number}{next ? ` · Înainte de ediția ${next.number}` : ''}</div>
+    <div class="kicker">
+      Sezonul {season.number}
+      {season.schedule && (
+        <span data-schedule={JSON.stringify(season.schedule)} hidden={!info}>
+          · Înainte de ediția <span data-next="number">{info?.number}</span>
+        </span>
+      )}
+    </div>
     <h1 class="h-couple">Predicțiile tale</h1>
     <p class="lead">Alege un scenariu pentru fiecare cuplu. Cu cât cota e mai mare, cu atât predicția corectă aduce mai multe puncte.</p>
   </section>
@@ -41,7 +50,7 @@ const couples = ranked(season.couples);
         <PredictionPicker
           id={`${show.slug}-s${season.number}-${c.slug}`}
           couple={c}
-          closes={next?.closes}
+          schedule={season.schedule}
           title={`${c.a.name} și ${c.b.name}`}
         />
         <a href={`/${show.slug}/${c.slug}/`} class="cell-link">Vezi evoluția cuplului</a>

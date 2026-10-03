@@ -23,6 +23,10 @@
   box-sizing: border-box;
 }
 
+[hidden] {
+  display: none !important;
+}
+
 body {
   margin: 0;
   background: var(--bg);
@@ -237,6 +241,7 @@ main.container {
   max-width: 680px;
   aspect-ratio: 21 / 9;
   object-fit: cover;
+  object-position: 50% 58%;
   border-radius: 14px;
   margin: 0 0 18px;
   background: var(--surface);
@@ -807,4 +812,87 @@ a.news-title,
 .link-list a {
   display: inline-block;
   padding: 8px 0;
+}
+
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
+}
+
+.flip {
+  display: flex;
+  gap: 12px;
+  margin: 6px 0 4px;
+}
+
+.flip-group {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px;
+}
+
+.flip-digits {
+  display: flex;
+  gap: 4px;
+  perspective: 240px;
+}
+
+.flip-card {
+  position: relative;
+  width: 34px;
+  height: 48px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font: 600 28px var(--mono);
+  color: var(--text);
+  background: linear-gradient(#223238 0 50%, #18252a 50% 100%);
+  border: 1px solid var(--line-strong);
+  border-radius: 7px;
+  box-shadow: 0 2px 0 #0a1012;
+  transform-origin: 50% 50%;
+}
+
+.flip-card::after {
+  content: '';
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: calc(50% - 1px);
+  height: 2px;
+  background: #0a1012;
+  opacity: 0.7;
+}
+
+.flip-card.tick {
+  animation: flip-tick 0.32s ease-out;
+}
+
+.flip-label {
+  font: 500 10px var(--mono);
+  color: var(--muted);
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+}
+
+@keyframes flip-tick {
+  from {
+    transform: rotateX(-80deg);
+    opacity: 0.5;
+  }
+  to {
+    transform: rotateX(0);
+    opacity: 1;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .flip-card.tick {
+    animation: none;
+  }
 }

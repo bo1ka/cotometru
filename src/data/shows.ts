@@ -12,6 +12,7 @@ export const shows: Show[] = [
     status: 'live',
     description:
       'Cinci cupluri își testează relația în Thailanda. Partenerii locuiesc separat, în două vile, alături de ispite, și află la bonfire ce a făcut celălalt. La final, fiecare cuplu decide dacă pleacă împreună sau separat.',
+    image: { src: '/images/insula-iubirii.webp', alt: 'Insula Iubirii: o insulă în formă de inimă, văzută de sus' },
     facts: [
       { label: 'Post TV', value: 'Antena 1 și AntenaPLAY' },
       { label: 'Prezentator', value: 'Radu Vâlcan' },
@@ -32,7 +33,15 @@ export const shows: Show[] = [
     season: {
       number: 10,
       question: 'Cine pleacă împreună de pe insulă?',
-      nextEpisode: { number: 10, when: 'Sâmbătă, 3 octombrie, ora 20:00', closes: '19:59' },
+      schedule: {
+        start: '2026-09-04',
+        slots: [
+          { weekday: 5, time: '20:30' },
+          { weekday: 6, time: '20:00' },
+        ],
+        skip: [],
+        extra: [],
+      },
       episodes: [
         { number: 1, date: '4 sept', summary: 'Premiera sezonului 10. Cuplurile ajung în Thailanda.' },
         { number: 2, date: '5 sept' },

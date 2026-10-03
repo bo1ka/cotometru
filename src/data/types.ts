@@ -33,12 +33,27 @@ export interface NewsItem {
   couples?: string[];
 }
 
+export interface Schedule {
+  start: string;
+  end?: string;
+  slots: { weekday: number; time: string }[];
+  skip?: string[];
+  extra?: { date: string; time: string }[];
+}
+
 export interface Season {
   number: number;
   question: string;
-  nextEpisode?: { number: number; when: string; closes: string };
+  schedule?: Schedule;
   episodes: Episode[];
   couples: Couple[];
+}
+
+export interface CommunityLink {
+  name: string;
+  url: string;
+  platform: 'Facebook' | 'TikTok' | 'Instagram' | 'YouTube' | 'Site';
+  note?: string;
 }
 
 export interface Show {
@@ -49,7 +64,7 @@ export interface Show {
   image?: { src: string; alt: string };
   facts?: { label: string; value: string }[];
   links?: { label: string; url: string }[];
-  community?: { name: string; url: string }[];
+  community?: CommunityLink[];
   season?: Season;
   poll?: { question: string; options: string[] };
   news?: NewsItem[];

@@ -1,16 +1,19 @@
 ---
-import type { Couple } from '../data/types';
+import type { Couple, Schedule } from '../data/types';
+import { nextAiring, describe } from '../lib/schedule';
 import { latest, cota, points } from '../lib/odds';
 
 interface Props {
   id: string;
   couple: Couple;
-  closes?: string;
+  schedule?: Schedule;
   title?: string;
 }
 
-const { id, couple, closes, title = 'Predicția ta: cum pleacă de pe insulă?' } = Astro.props;
+const { id, couple, schedule, title = 'Predicția ta: cum pleacă de pe insulă?' } = Astro.props;
 const headingId = `pick-${id}`;
+const next = schedule ? nextAiring(schedule, Date.now()) : null;
+const info = next ? describe(next) : null;
 const now = latest(couple);
 const options = [
   { key: 't', label: 'Pleacă împreună', p: now.t },
@@ -19,7 +22,11 @@ const options = [
 ];
 ---
 <section class="card" aria-labelledby={headingId} data-picker={id}>
-  {closes && <div class="kicker warm">Se închide la {closes}</div>}
+  {schedule && (
+    <div class="kicker warm" data-schedule={JSON.stringify(schedule)} hidden={!info}>
+      Se închide <span data-next="closes">{info?.closes}</span>
+    </div>
+  )}
   <h2 id={headingId} class="h-small">{title}</h2>
   <div class="options">
     {options.map((o) => (

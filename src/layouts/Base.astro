@@ -41,5 +41,8 @@ const canonicalUrl = new URL(canonical ?? Astro.url.pathname, site.url).href;
       <slot />
     </main>
     <Footer />
+    <script>
+      import '../scripts/next-airing';
+    </script>
   </body>
 </html>

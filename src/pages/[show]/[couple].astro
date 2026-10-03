@@ -5,6 +5,7 @@ import PredictionPicker from '../../components/PredictionPicker.astro';
 import NewsList from '../../components/NewsList.astro';
 import AdSlot from '../../components/AdSlot.astro';
 import { liveShows } from '../../data/shows';
+import { url } from '../../lib/url';
 import { latest, changeLabel, series } from '../../lib/odds';
 import type { Couple, Show } from '../../data/types';
 
@@ -53,7 +54,7 @@ const fullName = `${couple.a.name} și ${couple.b.name}`;
   activeShow={show.slug}
 >
   <nav aria-label="Navigare" class="crumbs">
-    <a href={`/${show.slug}/`}>{show.name}</a>
+    <a href={url(`/${show.slug}/`)}>{show.name}</a>
     <span aria-hidden="true">/</span>
     <span>Sezonul {season.number}</span>
     <span aria-hidden="true">/</span>

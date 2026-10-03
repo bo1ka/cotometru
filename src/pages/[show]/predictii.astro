@@ -2,6 +2,7 @@
 import Base from '../../layouts/Base.astro';
 import PredictionPicker from '../../components/PredictionPicker.astro';
 import { liveShows } from '../../data/shows';
+import { url } from '../../lib/url';
 import { ranked } from '../../lib/odds';
 import { nextAiring, describe } from '../../lib/schedule';
 import type { Show } from '../../data/types';
@@ -26,7 +27,7 @@ const couples = ranked(season.couples);
   activeShow={show.slug}
 >
   <nav aria-label="Navigare" class="crumbs">
-    <a href={`/${show.slug}/`}>{show.name}</a>
+    <a href={url(`/${show.slug}/`)}>{show.name}</a>
     <span aria-hidden="true">/</span>
     <span class="here">Predicții</span>
   </nav>
@@ -53,7 +54,7 @@ const couples = ranked(season.couples);
           schedule={season.schedule}
           title={`${c.a.name} și ${c.b.name}`}
         />
-        <a href={`/${show.slug}/${c.slug}/`} class="cell-link">Vezi evoluția cuplului</a>
+        <a href={url(`/${show.slug}/${c.slug}/`)} class="cell-link">Vezi evoluția cuplului</a>
       </div>
     ))}
   </div>

@@ -1,6 +1,7 @@
 ---
 import Base from '../layouts/Base.astro';
 import { legal } from '../data/legal';
+import { url } from '../lib/url';
 ---
 <Base title="Politica de confidențialitate | Cotometru" description="Ce date prelucrează Cotometru, de ce și ce drepturi ai.">
   <article class="prose">
@@ -21,7 +22,7 @@ import { legal } from '../data/legal';
     <h3>Date păstrate în browserul tău</h3>
     <p>
       Site-ul salvează în stocarea locală a browserului tema aleasă, răspunsul tău la întrebarea serii și predicțiile făcute.
-      Aceste date rămân pe dispozitivul tău. Detalii găsești în <a href="/cookie-uri/">pagina despre cookie-uri</a>.
+      Aceste date rămân pe dispozitivul tău. Detalii găsești în <a href={url('/cookie-uri/')}>pagina despre cookie-uri</a>.
     </p>
     <h3>Date tehnice</h3>
     <p>

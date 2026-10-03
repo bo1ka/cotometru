@@ -48,6 +48,8 @@ export interface Show {
   description?: string;
   image?: { src: string; alt: string };
   facts?: { label: string; value: string }[];
+  links?: { label: string; url: string }[];
+  community?: { name: string; url: string }[];
   season?: Season;
   poll?: { question: string; options: string[] };
   news?: NewsItem[];

@@ -20,6 +20,11 @@ export const shows: Show[] = [
       { label: 'Filmat în', value: 'Thailanda' },
       { label: 'Format', value: 'Temptation Island' },
     ],
+    links: [
+      { label: 'Site oficial Antena 1', url: 'https://a1.ro/insula-iubirii/' },
+      { label: 'Vezi pe AntenaPLAY', url: 'https://antenaplay.ro/insula-iubirii' },
+    ],
+    community: [],
     poll: {
       question: 'Câte cupluri pleacă împreună la final?',
       options: ['Niciunul sau unul', 'Două', 'Trei', 'Patru sau cinci'],

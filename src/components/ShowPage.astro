@@ -3,6 +3,7 @@ import type { Show } from '../data/types';
 import OddsBoard from './OddsBoard.astro';
 import Poll from './Poll.astro';
 import NewsList from './NewsList.astro';
+import AdSlot from './AdSlot.astro';
 
 interface Props {
   show: Show;
@@ -27,6 +28,13 @@ const next = season.nextEpisode;
           </div>
         ))}
       </dl>
+    )}
+    {show.links && show.links.length > 0 && (
+      <div class="hero-links">
+        {show.links.map((l) => (
+          <a href={l.url} class="pill-link" rel="noopener" target="_blank">{l.label}</a>
+        ))}
+      </div>
     )}
   </div>
   {next && (
@@ -54,7 +62,23 @@ const next = season.nextEpisode;
         <li>La final, predicțiile corecte făcute devreme aduc cele mai multe puncte.</li>
       </ol>
     </section>
+    {show.community && show.community.length > 0 && (
+      <section class="card outline" aria-labelledby="community-h">
+        <h2 id="community-h" class="h-small">Comunitate</h2>
+        <ul class="link-list">
+          {show.community.map((g) => (
+            <li><a href={g.url} rel="noopener nofollow" target="_blank">{g.name}</a></li>
+          ))}
+        </ul>
+        <p class="fine">Grupuri independente de fani. Pot conține spoilere și zvonuri.</p>
+      </section>
+    )}
+    <AdSlot format="rectangle" />
   </aside>
+</div>
+
+<div class="block">
+  <AdSlot format="banner" />
 </div>
 
 {show.news && show.news.length > 0 && (

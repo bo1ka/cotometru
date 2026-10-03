@@ -3,6 +3,7 @@ import Base from '../../layouts/Base.astro';
 import OddsChart from '../../components/OddsChart.astro';
 import PredictionPicker from '../../components/PredictionPicker.astro';
 import NewsList from '../../components/NewsList.astro';
+import AdSlot from '../../components/AdSlot.astro';
 import { liveShows } from '../../data/shows';
 import { latest, changeLabel, series } from '../../lib/odds';
 import type { Couple, Show } from '../../data/types';
@@ -128,6 +129,8 @@ const fullName = `${couple.a.name} și ${couple.b.name}`;
         <p class="fine no-top">Probabilitatea fiecărui scenariu, după fiecare ediție difuzată.</p>
         <OddsChart couple={couple} episodes={season.episodes} />
       </section>
+
+      <AdSlot format="banner" />
 
       {timeline.length > 0 && (
         <section class="card" aria-labelledby="tl-h">

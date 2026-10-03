@@ -1,0 +1,41 @@
+---
+import { site } from '../data/site';
+
+interface Props {
+  format: 'banner' | 'rectangle';
+}
+
+const { format } = Astro.props;
+---
+{site.adSlots !== 'off' && (
+  <div class:list={['ad-slot', `ad-${format}`]} data-ad-slot={format} aria-hidden="true">
+    <span>Spațiu publicitar</span>
+  </div>
+)}
+
+<style>
+  .ad-slot {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: 1px dashed var(--line-strong);
+    border-radius: 14px;
+    color: var(--muted);
+    font-family: var(--mono);
+    font-size: 12px;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+  }
+
+  .ad-banner {
+    width: 100%;
+    min-height: 120px;
+  }
+
+  .ad-rectangle {
+    width: 100%;
+    max-width: 336px;
+    min-height: 280px;
+    margin: 0 auto;
+  }
+</style>

@@ -5,15 +5,20 @@
   "private": true,
   "scripts": {
     "dev": "astro dev",
+    "dev:api": "PUBLIC_BACKEND=on astro build && wrangler dev",
     "build": "astro build",
     "preview": "astro preview",
-    "deploy": "astro build && wrangler deploy"
+    "check:worker": "tsc -p worker",
+    "db:migrate:local": "wrangler d1 migrations apply cotometru --local",
+    "db:migrate": "wrangler d1 migrations apply cotometru --remote",
+    "deploy": "PUBLIC_BACKEND=on astro build && wrangler deploy"
   },
   "dependencies": {
     "astro": "^7.3.5"
   },
   "devDependencies": {
     "@astrojs/check": "^0.9.10",
+    "@cloudflare/workers-types": "^5.20261003.1",
     "typescript": "^6.0.3",
     "wrangler": "^4.147.0"
   }

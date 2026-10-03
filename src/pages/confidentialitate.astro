@@ -2,6 +2,7 @@
 import Base from '../layouts/Base.astro';
 import { legal } from '../data/legal';
 import { url } from '../lib/url';
+import { site } from '../data/site';
 ---
 <Base title="Politica de confidențialitate | Cotometru" description="Ce date prelucrează Cotometru, de ce și ce drepturi ai.">
   <article class="prose">
@@ -14,7 +15,11 @@ import { url } from '../lib/url';
     <h2>Pe scurt</h2>
     <ul>
       <li>Nu ai nevoie de cont și nu îți cerem numele sau adresa de email.</li>
-      <li>Alegerile tale (tema, răspunsul la sondaj, predicțiile) rămân în browserul tău și nu ajung la noi.</li>
+      {site.backend ? (
+        <li>Predicțiile și voturile sunt salvate anonim, legate de un identificator aleatoriu, nu de numele tău.</li>
+      ) : (
+        <li>Alegerile tale (tema, răspunsul la sondaj, predicțiile) rămân în browserul tău și nu ajung la noi.</li>
+      )}
       <li>Nu folosim cookie-uri de publicitate sau de urmărire.</li>
     </ul>
 
@@ -24,6 +29,16 @@ import { url } from '../lib/url';
       Site-ul salvează în stocarea locală a browserului tema aleasă, răspunsul tău la întrebarea serii și predicțiile făcute.
       Aceste date rămân pe dispozitivul tău. Detalii găsești în <a href={url('/cookie-uri/')}>pagina despre cookie-uri</a>.
     </p>
+    {site.backend && (
+      <>
+        <h3>Predicții și voturi</h3>
+        <p>
+          Când faci o predicție sau votezi, salvăm pe serverele noastre alegerea ta împreună cu un identificator aleatoriu,
+          păstrat într-un cookie. Nu îl asociem cu numele, adresa de email sau adresa ta IP. Păstrăm aceste date pe durata
+          sezonului și cel mult 12 luni după încheierea lui. Poți cere ștergerea lor oricând.
+        </p>
+      </>
+    )}
     <h3>Date tehnice</h3>
     <p>
       Site-ul este găzduit de Cloudflare. Pentru a livra paginile și a proteja site-ul, Cloudflare prelucrează date tehnice ale

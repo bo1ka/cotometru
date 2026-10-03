@@ -1,6 +1,34 @@
 # Voting backend
 
-Plan for adding real votes and predictions to Cotometru. Status: not started.
+Real votes and predictions for Cotometru. Status: phase 1 is built and tested locally, not yet deployed.
+
+## Running it locally
+
+```
+npm install
+cp .dev.vars.example .dev.vars
+npm run db:migrate:local
+npm run dev:api
+```
+
+The site with the working API is then at http://localhost:8787. No Cloudflare account is needed for this.
+`npm run dev` on port 4321 still works for page work and forwards `/api` to port 8787 when the API is running.
+
+## Deploying
+
+1. `npx wrangler login`
+2. `npx wrangler d1 create cotometru`, then put the printed database id into `wrangler.jsonc`
+3. `npm run db:migrate`
+4. `npx wrangler secret put COOKIE_SECRET` and `npx wrangler secret put ADMIN_TOKEN` (long random strings)
+5. `npm run deploy`
+
+The GitHub Pages copy keeps working without the backend: predictions there stay on the visitor's device.
+
+## Not built yet
+
+- Turnstile bot check on the vote buttons
+- Per-episode odds history from real votes (the chart and the trend still use the editorial numbers)
+- Scoring and leaderboard (outcomes can be recorded through `POST /api/admin/outcome`)
 
 ## Summary
 

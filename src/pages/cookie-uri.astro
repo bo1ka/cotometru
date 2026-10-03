@@ -1,6 +1,7 @@
 ---
 import Base from '../layouts/Base.astro';
 import { legal } from '../data/legal';
+import { site } from '../data/site';
 ---
 <Base title="Cookie-uri și stocare locală | Cotometru" description="Ce păstrează Cotometru în browserul tău și cum poți șterge aceste date.">
   <article class="prose">
@@ -39,10 +40,24 @@ import { legal } from '../data/legal';
             <td>Predicțiile tale pentru fiecare cuplu</td>
             <td>Până o ștergi</td>
           </tr>
+          {site.backend && (
+            <tr>
+              <td class="mono">cm_vid (cookie)</td>
+              <td>Un identificator aleatoriu, ca să poți avea o singură predicție pentru fiecare cuplu și să o regăsești</td>
+              <td>12 luni</td>
+            </tr>
+          )}
         </tbody>
       </table>
     </div>
-    <p>Aceste date sunt strict necesare pentru funcțiile pe care le folosești și nu sunt trimise către noi.</p>
+    {site.backend ? (
+      <p>
+        Aceste date sunt strict necesare pentru funcțiile pe care le folosești. Cookie-ul cm_vid este setat doar după prima ta
+        predicție sau primul vot și nu conține date despre tine.
+      </p>
+    ) : (
+      <p>Aceste date sunt strict necesare pentru funcțiile pe care le folosești și nu sunt trimise către noi.</p>
+    )}
 
     <h2>Cookie-uri ale furnizorilor tehnici</h2>
     <p>

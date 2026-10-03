@@ -67,7 +67,7 @@ const fullName = `${couple.a.name} și ${couple.b.name}`;
       <h1 class="h-couple">{fullName}</h1>
     </div>
     <div class="big-stat">
-      <div class="mono big-pct">{now.t}%</div>
+      <div class="mono big-pct" data-live-pct data-show={show.slug} data-couple={couple.slug}>{now.t}%</div>
       <div>
         <div class="strong">șanse să plece împreună</div>
         <div class:list={['mono', 'chg', now.change > 0 ? 'up' : now.change < 0 ? 'down' : '']}>
@@ -154,13 +154,14 @@ const fullName = `${couple.a.name} și ${couple.b.name}`;
     </div>
 
     <aside class="col-side">
-      <PredictionPicker id={`${show.slug}-s${season.number}-${couple.slug}`} couple={couple} schedule={season.schedule} />
+      <PredictionPicker id={`${show.slug}-s${season.number}-${couple.slug}`} show={show.slug} couple={couple} schedule={season.schedule} />
       <section class="card outline" aria-labelledby="calc-h">
         <h2 id="calc-h" class="h-small">De unde vine cota</h2>
         <p class="soft no-top">Din predicțiile comunității și dintr-un scor pe evenimentele din ediții.</p>
         <p class="fine">Ținem cont doar de ce a fost difuzat. Fără spoilere și fără zvonuri din culise.</p>
       </section>
       {news.length > 0 && <NewsList items={news} title="Știri despre cuplu" compact />}
+      <AdSlot format="rectangle" />
     </aside>
   </div>
 </Base>

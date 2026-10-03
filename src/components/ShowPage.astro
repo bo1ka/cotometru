@@ -6,6 +6,7 @@ import NewsList from './NewsList.astro';
 import AdSlot from './AdSlot.astro';
 import { nextAiring, describe } from '../lib/schedule';
 import { url } from '../lib/url';
+import { latest } from '../lib/odds';
 
 interface Props {
   show: Show;
@@ -15,6 +16,7 @@ const { show } = Astro.props;
 const season = show.season!;
 const next = season.schedule ? nextAiring(season.schedule, Date.now()) : null;
 const info = next ? describe(next) : null;
+const expectedTogether = (season.couples.reduce((sum, c) => sum + latest(c).t, 0) / 100).toFixed(1).replace('.', ',');
 const units = [
   { key: 'd', label: 'zile' },
   { key: 'h', label: 'ore' },
@@ -91,7 +93,31 @@ const units = [
         <a href={url(`/${show.slug}/predictii/`)} class="button">Fă-ți predicțiile</a>
       </div>
     )}
-    {show.poll && <Poll id={`${show.slug}-s${season.number}`} question={show.poll.question} options={show.poll.options} />}
+    {season.nightly && season.nightly.length > 0 && season.schedule && (
+      <div class="stack" data-night-polls data-night-schedule={JSON.stringify(season.schedule)}>
+        {season.nightly.map((q) => (
+          <Poll
+            id={`${show.slug}-s${season.number}-e${q.episode}`}
+            show={show.slug}
+            kind="night"
+            episode={q.episode}
+            question={q.question}
+            options={q.options}
+          />
+        ))}
+      </div>
+    )}
+    <AdSlot format="rectangle" />
+    {show.poll && (
+      <Poll
+        id={`${show.slug}-s${season.number}`}
+        show={show.slug}
+        kind="season"
+        question={show.poll.question}
+        options={show.poll.options}
+        expected={`Predicțiile indică în jur de ${expectedTogether} cupluri împreună.`}
+      />
+    )}
     <section class="card outline" id="cum-functioneaza" aria-labelledby="how-h">
       <h2 id="how-h" class="h-small">Cum funcționează</h2>
       <ol class="steps">
@@ -115,6 +141,5 @@ const units = [
         <p class="fine">Grupuri, pagini și creatori independenți care comentează emisiunea. Pot conține spoilere și zvonuri.</p>
       </section>
     )}
-    <AdSlot format="rectangle" />
   </aside>
 </div>

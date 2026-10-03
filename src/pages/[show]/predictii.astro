@@ -37,7 +37,7 @@ const couples = ranked(season.couples);
       Sezonul {season.number}
       {season.schedule && (
         <span data-schedule={JSON.stringify(season.schedule)} hidden={!info}>
-          · Înainte de ediția <span data-next="number">{info?.number}</span>
+          {' · Înainte de ediția '}<span data-next="number">{info?.number}</span>
         </span>
       )}
     </div>
@@ -50,6 +50,7 @@ const couples = ranked(season.couples);
       <div class="picker-cell">
         <PredictionPicker
           id={`${show.slug}-s${season.number}-${c.slug}`}
+          show={show.slug}
           couple={c}
           schedule={season.schedule}
           title={`${c.a.name} și ${c.b.name}`}

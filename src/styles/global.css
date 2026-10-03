@@ -591,9 +591,58 @@ main.container {
 
 .bar {
   width: 100%;
-  height: 10px;
-  display: block;
-  border-radius: 5px;
+  height: 12px;
+  display: flex;
+}
+
+.seg {
+  position: relative;
+  height: 100%;
+  min-width: 6px;
+  cursor: help;
+}
+
+.seg:first-child {
+  border-radius: 6px 0 0 6px;
+}
+
+.seg:last-child {
+  border-radius: 0 6px 6px 0;
+}
+
+.seg:hover,
+.seg:focus-visible {
+  outline: 2px solid var(--text);
+  outline-offset: 1px;
+  z-index: 2;
+}
+
+.seg:hover::after,
+.seg:focus::after {
+  content: attr(data-tip);
+  position: absolute;
+  bottom: calc(100% + 9px);
+  left: 50%;
+  transform: translateX(-50%);
+  padding: 6px 9px;
+  border-radius: 6px;
+  background: var(--text);
+  color: var(--bg);
+  font: 500 12px var(--mono);
+  white-space: nowrap;
+  pointer-events: none;
+  z-index: 5;
+}
+
+.seg:first-child::after {
+  left: 0;
+  transform: none;
+}
+
+.seg:last-child::after {
+  left: auto;
+  right: 0;
+  transform: none;
 }
 
 .options {
@@ -616,6 +665,28 @@ main.container {
   font: 500 15px var(--body);
   cursor: pointer;
   text-align: left;
+}
+
+.option {
+  position: relative;
+  overflow: hidden;
+}
+
+.option::before {
+  content: '';
+  position: absolute;
+  inset: 0 auto 0 0;
+  width: var(--share, 0%);
+  background: var(--surface-2);
+  transition: width 0.3s ease-out;
+}
+
+.option > * {
+  position: relative;
+}
+
+.option:disabled {
+  cursor: default;
 }
 
 .option-lg {

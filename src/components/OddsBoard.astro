@@ -11,8 +11,14 @@ const { show } = Astro.props;
 const season = show.season!;
 const rows = ranked(season.couples).map((c, k) => ({ c, rank: k + 1, now: latest(c) }));
 const lastEpisode = season.episodes.length;
+const segments = (now: { t: number; s: number; i: number }) =>
+  [
+    { key: 't', label: 'Împreună', p: now.t },
+    { key: 's', label: 'Separat', p: now.s },
+    { key: 'i', label: 'Cu o ispită', p: now.i },
+  ].map((seg) => ({ ...seg, tip: `${seg.label} ${seg.p}% · cotă ${cota(seg.p)}` }));
 ---
-<section class="card" aria-labelledby="board-h">
+<section class="card" aria-labelledby="board-h" data-board={show.slug}>
   <div class="card-head">
     <h2 id="board-h">{season.question}</h2>
     <div class="legend">
@@ -32,33 +38,37 @@ const lastEpisode = season.episodes.length;
         <div>Scenarii</div>
         <div>Cotă</div>
       </div>
-      {rows.map(({ c, rank, now }) => (
-        <div class="board-row">
-          <div class="mono muted">{rank}</div>
-          <a href={url(`/${show.slug}/${c.slug}/`)} class="couple-name">{c.a.name} & {c.b.name}</a>
-          <svg viewBox="0 0 96 28" class="spark" aria-hidden="true">
-            <polyline points={spark(c.history.together)} />
-          </svg>
-          <div class="mono pct">{now.t}%</div>
-          <div class:list={['mono', 'chg', now.change > 0 ? 'up' : now.change < 0 ? 'down' : '']}>{changeLabel(now.change)}</div>
-          <svg
-            viewBox="0 0 100 8"
-            preserveAspectRatio="none"
-            class="bar"
-            role="img"
-            aria-label={`Împreună ${now.t}%, separat ${now.s}%, cu o ispită ${now.i}%`}
-          >
-            <rect x="0" y="0" width={now.t} height="8" class="fill-t" />
-            <rect x={now.t} y="0" width={now.s} height="8" class="fill-s" />
-            <rect x={now.t + now.s} y="0" width={now.i} height="8" class="fill-i" />
-          </svg>
-          <div class="mono">{cota(now.t)}</div>
-        </div>
-      ))}
+      <div>
+        {rows.map(({ c, rank, now }) => (
+          <div class="board-row" data-board-row data-couple={c.slug} data-t={now.t}>
+            <div class="mono muted" data-cell="rank">{rank}</div>
+            <a href={url(`/${show.slug}/${c.slug}/`)} class="couple-name">{c.a.name} & {c.b.name}</a>
+            <svg viewBox="0 0 96 28" class="spark" aria-hidden="true">
+              <polyline points={spark(c.history.together)} />
+            </svg>
+            <div class="mono pct" data-cell="pct">{now.t}%</div>
+            <div class:list={['mono', 'chg', now.change > 0 ? 'up' : now.change < 0 ? 'down' : '']}>{changeLabel(now.change)}</div>
+            <div class="bar" role="group" aria-label="Scenarii">
+              {segments(now).map((seg) => (
+                <span
+                  class:list={['seg', `bg-${seg.key}`]}
+                  data-bar={seg.key}
+                  style={`width: ${seg.p}%`}
+                  tabindex="0"
+                  role="img"
+                  aria-label={seg.tip}
+                  data-tip={seg.tip}
+                />
+              ))}
+            </div>
+            <div class="mono" data-cell="cota">{cota(now.t)}</div>
+          </div>
+        ))}
+      </div>
     </div>
   </div>
   <p class="fine">
     Cote actualizate după fiecare ediție, din predicțiile comunității și din ce s-a văzut la TV. Fără bani și fără mize. Cota
-    arată câte puncte aduce o predicție corectă pentru fiecare 100 de puncte de bază.
+    arată câte puncte aduce o predicție corectă pentru fiecare 100 de puncte de bază. <span data-votes-total hidden></span>
   </p>
 </section>

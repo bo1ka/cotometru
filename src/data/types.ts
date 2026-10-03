@@ -41,10 +41,17 @@ export interface Schedule {
   extra?: { date: string; time: string }[];
 }
 
+export interface NightQuestion {
+  episode: number;
+  question: string;
+  options: string[];
+}
+
 export interface Season {
   number: number;
   question: string;
   schedule?: Schedule;
+  nightly?: NightQuestion[];
   episodes: Episode[];
   couples: Couple[];
 }

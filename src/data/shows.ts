@@ -47,6 +47,13 @@ export const shows: Show[] = [
         skip: [],
         extra: [],
       },
+      nightly: [
+        {
+          episode: 10,
+          question: 'După tot ce s-a văzut până acum, tu ce ai face în locul Biancăi Iotu?',
+          options: ['I-aș mai da o șansă lui Remi', 'Aș aștepta bonfire-ul final', 'Aș pleca singură de pe insulă'],
+        },
+      ],
       episodes: [
         { number: 1, date: '4 sept', summary: 'Premiera sezonului 10. Cuplurile ajung în Thailanda.' },
         { number: 2, date: '5 sept' },

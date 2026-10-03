@@ -520,12 +520,12 @@ main.container {
 }
 
 .board {
-  min-width: 680px;
+  min-width: 708px;
 }
 
 .board-row {
   display: grid;
-  grid-template-columns: 28px minmax(190px, 1.6fr) 100px 96px 80px minmax(130px, 1fr) 64px;
+  grid-template-columns: 28px minmax(190px, 1.6fr) 100px 96px 108px minmax(130px, 1fr) 64px;
   gap: 14px;
   align-items: center;
   padding: 18px 0;
@@ -534,6 +534,7 @@ main.container {
 
 .board-headings {
   padding: 12px 0;
+  white-space: nowrap;
   font-family: var(--mono);
   font-size: 11px;
   color: var(--muted);

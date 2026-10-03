@@ -56,7 +56,7 @@ const fullName = `${couple.a.name} și ${couple.b.name}`;
   <nav aria-label="Navigare" class="crumbs">
     <a href={url(`/${show.slug}/`)}>{show.name}</a>
     <span aria-hidden="true">/</span>
-    <span>Sezonul {season.number}</span>
+    <a href={url(`/${show.slug}/`)}>Sezonul {season.number}</a>
     <span aria-hidden="true">/</span>
     <span class="here">{couple.shortName}</span>
   </nav>

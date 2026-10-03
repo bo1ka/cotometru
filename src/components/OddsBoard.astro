@@ -11,6 +11,8 @@ const { show } = Astro.props;
 const season = show.season!;
 const rows = ranked(season.couples).map((c, k) => ({ c, rank: k + 1, now: latest(c) }));
 const lastEpisode = season.episodes.length;
+const biggest = Math.max(...rows.map((r) => Math.abs(r.now.change)));
+const mover = biggest > 0 ? rows.find((r) => Math.abs(r.now.change) === biggest)?.c.slug : undefined;
 const segments = (now: { t: number; s: number; i: number }) =>
   [
     { key: 't', label: 'Împreună', p: now.t },
@@ -18,7 +20,7 @@ const segments = (now: { t: number; s: number; i: number }) =>
     { key: 'i', label: 'Cu o ispită', p: now.i },
   ].map((seg) => ({ ...seg, tip: `${seg.label} ${seg.p}% · cotă ${cota(seg.p)}` }));
 ---
-<section class="card" aria-labelledby="board-h" data-board={show.slug}>
+<section class="card scoreboard" aria-labelledby="board-h" data-board={show.slug}>
   <div class="card-head">
     <h2 id="board-h">{season.question}</h2>
     <div class="legend">
@@ -40,14 +42,14 @@ const segments = (now: { t: number; s: number; i: number }) =>
       </div>
       <div>
         {rows.map(({ c, rank, now }) => (
-          <div class="board-row" data-board-row data-couple={c.slug} data-t={now.t}>
-            <div class="mono muted" data-cell="rank">{rank}</div>
+          <div class:list={['board-row', { mover: c.slug === mover }]} data-board-row data-couple={c.slug} data-t={now.t}>
+            <div class="num muted" data-cell="rank">{rank}</div>
             <a href={url(`/${show.slug}/${c.slug}/`)} class="couple-name">{c.a.name} & {c.b.name}</a>
             <svg viewBox="0 0 96 28" class="spark" aria-hidden="true">
               <polyline points={spark(c.history.together)} />
             </svg>
-            <div class="mono pct" data-cell="pct">{now.t}%</div>
-            <div class:list={['mono', 'chg', now.change > 0 ? 'up' : now.change < 0 ? 'down' : '']}>{changeLabel(now.change)}</div>
+            <div class="num pct" data-cell="pct">{now.t}%</div>
+            <div class:list={['num', 'chg', now.change > 0 ? 'up' : now.change < 0 ? 'down' : '']}>{changeLabel(now.change)}</div>
             <div class="bar" role="group" aria-label="Scenarii">
               {segments(now).map((seg) => (
                 <span
@@ -61,7 +63,7 @@ const segments = (now: { t: number; s: number; i: number }) =>
                 />
               ))}
             </div>
-            <div class="mono" data-cell="cota">{cota(now.t)}</div>
+            <div class="num" data-cell="cota">{cota(now.t)}</div>
           </div>
         ))}
       </div>

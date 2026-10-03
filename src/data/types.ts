@@ -59,7 +59,7 @@ export interface Season {
 export interface CommunityLink {
   name: string;
   url: string;
-  platform: 'Facebook' | 'TikTok' | 'Instagram' | 'YouTube' | 'Site';
+  platform: 'Facebook' | 'TikTok' | 'Instagram' | 'YouTube' | 'Reddit' | 'Site';
   note?: string;
 }
 

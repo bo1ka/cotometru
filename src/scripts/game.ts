@@ -135,12 +135,12 @@ function applyOdds(show: string, odds: OddsResponse) {
         if (target) target.textContent = text;
       };
       set('pct', `${Math.round(value.t)}%`);
-      set('cota', (100 / Math.max(value.t, 1)).toFixed(2));
+      set('cota', (100 / Math.max(value.t, 1)).toFixed(2).replace('.', ','));
       const segment = (name: Outcome, label: string) => {
         const target = row.querySelector<HTMLElement>(`[data-bar="${name}"]`);
         if (!target) return;
         const p = value[name];
-        const tip = `${label} ${Math.round(p)}% · cotă ${(100 / Math.max(p, 1)).toFixed(2)}`;
+        const tip = `${label} ${Math.round(p)}% · cotă ${(100 / Math.max(p, 1)).toFixed(2).replace('.', ',')}`;
         target.style.width = `${p}%`;
         target.dataset.tip = tip;
         target.setAttribute('aria-label', tip);
@@ -175,7 +175,7 @@ function applyOdds(show: string, odds: OddsResponse) {
         const p = Math.max(value[button.dataset.option as Outcome] ?? 1, 1);
         button.dataset.gain = String(Math.round(10000 / p));
         const cota = button.querySelector<HTMLElement>('[data-cota]');
-        if (cota) cota.textContent = (100 / p).toFixed(2);
+        if (cota) cota.textContent = (100 / p).toFixed(2).replace('.', ',');
       });
     });
   polls.filter((poll) => poll.dataset.show === show && canSee(poll)).forEach((poll) => showPoll(poll, resultsFor(poll, odds)));

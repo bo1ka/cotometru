@@ -67,18 +67,18 @@ const fullName = `${couple.a.name} și ${couple.b.name}`;
       <h1 class="h-couple">{fullName}</h1>
     </div>
     <div class="big-stat">
-      <div class="mono big-pct" data-live-pct data-show={show.slug} data-couple={couple.slug}>{now.t}%</div>
+      <div class="num big-pct" data-live-pct data-show={show.slug} data-couple={couple.slug}>{now.t}%</div>
       <div>
         <div class="strong">șanse să plece împreună</div>
-        <div class:list={['mono', 'chg', now.change > 0 ? 'up' : now.change < 0 ? 'down' : '']}>
+        <div class:list={['num', 'chg', now.change > 0 ? 'up' : now.change < 0 ? 'down' : '']}>
           {changeLabel(now.change)} după ediția {lastEpisode}
         </div>
       </div>
     </div>
   </section>
 
-  <div class="columns">
-    <div class="col-main stack">
+  <div class="rows">
+    <div class="cell">
       <section class="card" aria-labelledby="about-h">
         <h2 id="about-h">Despre cuplu</h2>
         <div class="people">
@@ -124,17 +124,19 @@ const fullName = `${couple.a.name} și ${couple.b.name}`;
           </p>
         )}
       </section>
-
+    </div>
+    <aside class="cell cell-lead">
+      <PredictionPicker id={`${show.slug}-s${season.number}-${couple.slug}`} show={show.slug} couple={couple} schedule={season.schedule} />
+    </aside>
+    <div class="cell">
       <section class="card" aria-labelledby="chart-h">
-        <h2 id="chart-h">Cum s-au mișcat cotele</h2>
+        <h2 id="chart-h">Urcușuri și căderi</h2>
         <p class="fine no-top">Probabilitatea fiecărui scenariu, după fiecare ediție difuzată.</p>
         <OddsChart couple={couple} episodes={season.episodes} />
       </section>
-
       <AdSlot format="banner" />
-
       {timeline.length > 0 && (
-        <section class="card" aria-labelledby="tl-h">
+        <section class="plain" aria-labelledby="tl-h">
           <h2 id="tl-h">Ce s-a întâmplat, ediție cu ediție</h2>
           <ol class="timeline">
             {timeline.map((row) => (
@@ -142,9 +144,9 @@ const fullName = `${couple.a.name} și ${couple.b.name}`;
                 <div class="mono news-meta">Ed. {row.ep.number} · {row.ep.date}</div>
                 <div class="tl-text">{row.text}</div>
                 {row.change === null ? (
-                  <div class="mono soft">{row.start}% la start</div>
+                  <div class="num soft">{row.start}% la start</div>
                 ) : (
-                  <div class:list={['mono', 'chg', row.change > 0 ? 'up' : row.change < 0 ? 'down' : '']}>{changeLabel(row.change)}</div>
+                  <div class:list={['num', 'chg', row.change > 0 ? 'up' : row.change < 0 ? 'down' : '']}>{changeLabel(row.change)}</div>
                 )}
               </li>
             ))}
@@ -152,15 +154,13 @@ const fullName = `${couple.a.name} și ${couple.b.name}`;
         </section>
       )}
     </div>
-
-    <aside class="col-side">
-      <PredictionPicker id={`${show.slug}-s${season.number}-${couple.slug}`} show={show.slug} couple={couple} schedule={season.schedule} />
+    <aside class="cell">
       <section class="card outline" aria-labelledby="calc-h">
         <h2 id="calc-h" class="h-small">De unde vine cota</h2>
         <p class="soft no-top">Din predicțiile comunității și dintr-un scor pe evenimentele din ediții.</p>
         <p class="fine">Ținem cont doar de ce a fost difuzat. Fără spoilere și fără zvonuri din culise.</p>
       </section>
-      {news.length > 0 && <NewsList items={news} title="Știri despre cuplu" compact />}
+      {news.length > 0 && <NewsList items={news} title="Ce s-a mai aflat despre ei" compact />}
       <AdSlot format="rectangle" />
     </aside>
   </div>

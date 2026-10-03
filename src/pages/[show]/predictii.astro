@@ -74,13 +74,17 @@ const couples = ranked(season.couples);
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
     gap: 24px;
-    align-items: start;
+    align-items: stretch;
   }
 
   .picker-cell {
     display: flex;
     flex-direction: column;
     gap: 4px;
+  }
+
+  .picker-cell > :global(section) {
+    flex: 1;
   }
 
   .cell-link {

@@ -4,6 +4,7 @@ import OddsBoard from './OddsBoard.astro';
 import Poll from './Poll.astro';
 import NewsList from './NewsList.astro';
 import AdSlot from './AdSlot.astro';
+import PlatformIcon from './PlatformIcon.astro';
 import { nextAiring, describe } from '../lib/schedule';
 import { url } from '../lib/url';
 import { latest } from '../lib/odds';
@@ -65,13 +66,12 @@ const units = [
   {show.image && <img src={url(show.image.src)} alt={show.image.alt} class="hero-image" />}
 </section>
 
-<div class="columns">
-  <div class="col-main stack">
+<div class="rows">
+  <div class="cell">
     <OddsBoard show={show} />
     <AdSlot format="banner" />
-    {show.news && show.news.length > 0 && <NewsList items={show.news} title="Știri despre emisiune" />}
   </div>
-  <aside class="col-side">
+  <aside class="cell cell-lead">
     {season.schedule && (
       <div class="card next-card" data-schedule={JSON.stringify(season.schedule)} hidden={!info}>
         <div class="kicker muted">Urmează</div>
@@ -90,7 +90,7 @@ const units = [
         </div>
         <div class="sr-only" role="timer" data-next="countdown"></div>
         <div class="warm strong">Predicțiile se închid la <span data-next="closesTime">{info?.closesTime}</span></div>
-        <a href={url(`/${show.slug}/predictii/`)} class="button">Fă-ți predicțiile</a>
+        <a href={url(`/${show.slug}/predictii/`)} class="button">Pune-ți pronosticul</a>
       </div>
     )}
     {season.nightly && season.nightly.length > 0 && season.schedule && (
@@ -107,6 +107,33 @@ const units = [
         ))}
       </div>
     )}
+  </aside>
+  <div class="cell">
+    {show.news && show.news.length > 0 && <NewsList items={show.news} title="Ce s-a mai aflat" />}
+    {show.community && show.community.length > 0 && (
+      <section class="plain fill" aria-labelledby="community-h">
+        <div class="card-head">
+          <h2 id="community-h">Unde comentează lumea</h2>
+          <div class="fine no-margin">Pagini oficiale și comunități de fani. Pot conține spoilere.</div>
+        </div>
+        <div class="link-rows">
+          {show.community.map((g) => (
+            <a href={g.url} class="link-row" rel="noopener nofollow" target="_blank">
+              <span class="mono news-meta platform">
+                <PlatformIcon platform={g.platform} />
+                {g.platform}
+              </span>
+              <span class="link-row-main">
+                <span class="community-name">{g.name}</span>
+                {g.note && <span class="fine no-margin">{g.note}</span>}
+              </span>
+            </a>
+          ))}
+        </div>
+      </section>
+    )}
+  </div>
+  <aside class="cell">
     <AdSlot format="rectangle" />
     {show.poll && (
       <Poll
@@ -126,20 +153,5 @@ const units = [
         <li>La final, predicțiile corecte făcute devreme aduc cele mai multe puncte.</li>
       </ol>
     </section>
-    {show.community && show.community.length > 0 && (
-      <section class="card outline" aria-labelledby="community-h">
-        <h2 id="community-h" class="h-small">Comunitate</h2>
-        <ul class="link-list">
-          {show.community.map((g) => (
-            <li>
-              <a href={g.url} rel="noopener nofollow" target="_blank">{g.name}</a>
-              <span class="tag">{g.platform}</span>
-              {g.note && <div class="fine no-margin">{g.note}</div>}
-            </li>
-          ))}
-        </ul>
-        <p class="fine">Grupuri, pagini și creatori independenți care comentează emisiunea. Pot conține spoilere și zvonuri.</p>
-      </section>
-    )}
   </aside>
 </div>

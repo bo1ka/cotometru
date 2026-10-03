@@ -34,13 +34,13 @@ const options = [
     {options.map((o) => (
       <button type="button" class="option option-lg" data-option={o.key} data-gain={points(o.p)} aria-pressed="false">
         <span>{o.label}</span>
-        <span class="mono strong" data-cota>{cota(o.p)}</span>
+        <span class="num strong" data-cota>{cota(o.p)}</span>
       </button>
     ))}
   </div>
   <div class="gain" data-gain-box hidden>
     <div class="soft">Dacă ai dreptate la final</div>
-    <div class="mono gain-value">+<span data-gain-value></span> puncte</div>
+    <div class="num gain-value">+<span data-gain-value></span> puncte</div>
   </div>
   <p class="fine" data-note>
     {site.backend

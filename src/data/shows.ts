@@ -30,7 +30,44 @@ export const shows: Show[] = [
         logo: { dark: '/images/antenaplay-dark.png', light: '/images/antenaplay-light.png', alt: 'AntenaPLAY' },
       },
     ],
-    community: [],
+    community: [
+      {
+        name: 'Insula Iubirii Memes',
+        url: 'https://www.facebook.com/insulaiubiriimemes/',
+        platform: 'Facebook',
+        note: 'Comunitate de fani, cu meme-uri și comentarii la fiecare ediție',
+      },
+      {
+        name: 'Insula Iubirii pe TikTok',
+        url: 'https://www.tiktok.com/discover/insula-iubirii',
+        platform: 'TikTok',
+        note: 'Clipuri și reacții de la fani',
+      },
+      {
+        name: 'Insula Iubirii pe Reddit',
+        url: 'https://www.reddit.com/search/?q=insula%20iubirii',
+        platform: 'Reddit',
+        note: 'Discuțiile de pe Reddit despre emisiune',
+      },
+      {
+        name: 'Antena 1',
+        url: 'https://www.facebook.com/antena1official/',
+        platform: 'Facebook',
+        note: 'Pagina oficială a postului',
+      },
+      {
+        name: '@antena1_oficial',
+        url: 'https://www.instagram.com/antena1_oficial/',
+        platform: 'Instagram',
+        note: 'Contul oficial al postului',
+      },
+      {
+        name: '@antena1.ro',
+        url: 'https://www.tiktok.com/@antena1.ro',
+        platform: 'TikTok',
+        note: 'Contul oficial al postului',
+      },
+    ],
     poll: {
       question: 'Câte cupluri pleacă împreună la final?',
       options: ['Niciunul sau unul', 'Două', 'Trei', 'Patru sau cinci'],
@@ -174,12 +211,6 @@ export const shows: Show[] = [
         title: 'La Insula Iubirii, după primele alegeri de date, în vila fetelor va răsuna în premieră cutia cu surprize',
         url: 'https://observatornews.ro/media/la-insula-iubirii-dupa-primele-alegeri-de-date-in-vila-fetelor-va-rasuna-in-premiera-cutia-cu-surprize-665899.html',
         kind: 'aired',
-      },
-      {
-        source: 'Ziarul Profit',
-        title: 'Insula Iubirii 2026. Șoc total, un alt cuplu este dat afară după nicio săptămână',
-        url: 'https://www.ziarulprofit.ro/insula-iubirii-2026-soc-total-la-show-ul-matrimonial-un-alt-cuplu-este-dat-afara-dupa-nicio-saptamana/',
-        kind: 'rumor',
       },
     ],
   },

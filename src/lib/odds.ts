@@ -14,7 +14,7 @@ export function latest(c: Couple) {
 }
 
 export function cota(p: number) {
-  return (100 / p).toFixed(2);
+  return (100 / p).toFixed(2).replace('.', ',');
 }
 
 export function points(p: number) {

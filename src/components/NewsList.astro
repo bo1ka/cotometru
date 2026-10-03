@@ -5,18 +5,20 @@ interface Props {
   items: NewsItem[];
   title: string;
   compact?: boolean;
+  limit?: number;
 }
 
-const { items, title, compact = false } = Astro.props;
+const { items, title, compact = false, limit = 5 } = Astro.props;
+const extra = Math.max(0, items.length - limit);
 ---
-<section class="card" aria-labelledby="news-h">
+<section class="plain" aria-labelledby="news-h" data-news>
   <div class="card-head">
     <h2 id="news-h" class:list={[{ 'h-small': compact }]}>{title}</h2>
     {!compact && <div class="fine no-margin">Titluri verificate de redacție. Linkurile duc la publicația sursă.</div>}
   </div>
   <ul class="news">
-    {items.map((n) => (
-      <li class:list={['news-item', { compact }]}>
+    {items.map((n, k) => (
+      <li class:list={['news-item', { compact }]} hidden={k >= limit} data-extra={k >= limit ? '' : undefined}>
         <div class="mono news-meta">{[n.date, n.source].filter(Boolean).join(' · ')}</div>
         {n.kind === 'rumor' ? (
           <details class="news-title">
@@ -32,5 +34,21 @@ const { items, title, compact = false } = Astro.props;
       </li>
     ))}
   </ul>
-  {!compact && <p class="fine">Zvonurile nu influențează cotele. Contează doar ce a fost difuzat.</p>}
+  {extra > 0 && (
+    <button type="button" class="more-news" data-more-news>
+      Arată încă {extra} {extra === 1 ? 'știre' : 'știri'}
+    </button>
+  )}
+  {!compact && items.some((n) => n.kind === 'rumor') && (
+    <p class="fine">Zvonurile nu influențează cotele. Contează doar ce a fost difuzat.</p>
+  )}
 </section>
+
+<script>
+  document.querySelectorAll<HTMLButtonElement>('[data-more-news]').forEach((button) => {
+    button.addEventListener('click', () => {
+      button.closest('[data-news]')?.querySelectorAll<HTMLElement>('[data-extra]').forEach((item) => (item.hidden = false));
+      button.hidden = true;
+    });
+  });
+</script>
